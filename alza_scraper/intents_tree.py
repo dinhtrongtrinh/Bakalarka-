@@ -1,5 +1,6 @@
 # Automaticky vytvořeno scrape_intents.py; UTF-8.
 # Popisy jsou generované shrnutí tématu, nikoli obchodní podmínky.
+# Kategorie out_of_scope je doplněná ručně pro dotazy mimo doménu Alzy.
 
 ALZA_INTENTS = {
     "orders_and_payments": {
@@ -370,6 +371,19 @@ ALZA_INTENTS = {
                 "title": "Nahlášení nezákonného obsahu",
                 "url": "https://www.alza.cz/contact-and-support/nahlaseni-nezakonneho-obsahu/482",
                 "description": "Uživatel chce prostřednictvím sekce Ostatní nahlásit obsah, který považuje za nezákonný."
+            }
+        ]
+    },
+    "out_of_scope": {
+        "title": "Mimo doménu Alzy (OOS)",
+        "url": "",
+        "description": "Uživatel pokládá dotaz, který nesouvisí s Alzou, nakupováním ani zákaznickou podporou e-shopu.",
+        "sub_intents": [
+            {
+                "id": "oos",
+                "title": "Dotaz mimo doménu",
+                "url": "",
+                "description": "Uživatel se ptá na počasí, recepty, čas, matematiku, obecné znalosti nebo jiná témata nesouvisející s Alzou a nakupováním."
             }
         ]
     }

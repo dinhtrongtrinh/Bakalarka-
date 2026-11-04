@@ -1,0 +1,50 @@
+# Python bytecode a cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# Lokální Python prostředí a sestavení balíčků
+.venv/
+venv/
+env/
+ENV/
+build/
+dist/
+*.egg-info/
+.uv-cache/
+
+# Klíče, proměnné prostředí a osobní nastavení
+.env
+.env.*
+!.env.example
+!.env.template
+/alza_scraper/config.py
+.aws/
+
+# # Generované datasety a průběžné výstupy
+# datasets/
+# alza_data/
+# *.partial.jsonl
+# *.jsonl.tmp
+# *.py.tmp
+
+# Logy, notebookové checkpointy a dočasné soubory
+*.log
+.ipynb_checkpoints/
+*.tmp
+*.swp
+*.swo
+*~
+
+# Soubory operačního systému
+.DS_Store
+Thumbs.db
+Desktop.ini
