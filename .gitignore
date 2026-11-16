@@ -21,6 +21,9 @@ dist/
 *.egg-info/
 .uv-cache/
 /embedding_models/outputs/
+/embedding_models/outputs_by_generator/
+/embedding_models/.model_cache/
+/intent_classification/results_by_generator/
 
 # Klíče, proměnné prostředí a osobní nastavení
 .env

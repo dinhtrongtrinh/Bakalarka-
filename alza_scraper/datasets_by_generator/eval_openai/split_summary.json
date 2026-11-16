@@ -1,0 +1,19 @@
+{
+  "train_generators": [
+    "gemini",
+    "claude"
+  ],
+  "evaluation_generator": "openai",
+  "random_state": 42,
+  "validation_fraction_of_evaluation_generator": 0.5,
+  "counts": {
+    "train": 1136,
+    "validation": 297,
+    "test": 297
+  },
+  "oos_counts": {
+    "train": 16,
+    "validation": 17,
+    "test": 17
+  }
+}
