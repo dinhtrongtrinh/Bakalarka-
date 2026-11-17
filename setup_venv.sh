@@ -22,6 +22,7 @@ fi
 # openai: generování dat přes OpenAI a kompatibilní API.
 # datasets: načítání veřejných datasetů z Hugging Face.
 # numpy, scikit-learn: práce s vektory, dělení dat, k-NN a metriky.
+# matplotlib: ukládání grafů hledání hyperparametrů.
 # sentence-transformers, transformers, torch: načtení embedding modelu a inference.
 # huggingface-hub: přístup k modelům a příkaz hf auth login.
 uv pip install --python "$venv_dir/bin/python" \
@@ -30,6 +31,7 @@ uv pip install --python "$venv_dir/bin/python" \
     'openai>=1.55,<3' \
     datasets \
     numpy \
+    matplotlib \
     'scikit-learn>=1.5,<2' \
     'sentence-transformers>=5.1,<6' \
     'transformers>=4.56,<6' \

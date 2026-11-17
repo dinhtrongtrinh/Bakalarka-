@@ -1,0 +1,69 @@
+Embeddingy: /home/martin/Bakalarka-/main/embedding_models/outputs/random/modernbert
+Výběr podle: validation macro F1
+Nejlepší k: 18
+Validation accuracy: 0.441558
+Validation macro F1: 0.413892
+
+                                           precision    recall  f1-score   support
+
+                account_business_purchase      1.000     0.750     0.857         4
+                          account_careers      0.333     0.250     0.286         4
+               account_forgotten_password      0.333     1.000     0.500         4
+            account_marketing_unsubscribe      0.600     0.750     0.667         4
+                    account_personal_data      0.500     0.750     0.600         4
+           account_report_illegal_content      0.333     0.250     0.286         4
+             claim_alzabox_pickup_expired      0.800     1.000     0.889         4
+                claim_completed_follow_up      0.500     0.750     0.600         4
+                   claim_damaged_shipment      0.000     0.000     0.000         4
+                    claim_defective_goods      0.125     0.250     0.167         4
+                claim_incomplete_shipment      0.091     0.250     0.133         4
+                             claim_status      0.000     0.000     0.000         4
+                        claim_wrong_goods      0.667     0.500     0.571         4
+                 old_appliance_collection      0.333     0.500     0.400         4
+                                      oos      1.000     1.000     1.000         7
+                  order_business_purchase      0.500     0.750     0.600         4
+                order_change_or_extension      0.000     0.000     0.000         4
+                              order_delay      0.250     0.500     0.333         4
+                   order_delivery_options      1.000     0.250     0.400         4
+                      order_device_rental      0.222     0.500     0.308         4
+                    order_digital_content      0.500     0.750     0.600         4
+               order_installment_purchase      0.200     0.250     0.222         4
+     order_invoice_or_credit_note_payment      0.500     0.250     0.333         4
+                    order_invoice_request      0.250     0.250     0.250         4
+                       order_pay_in_three      0.333     0.250     0.286         4
+                     order_payment_refund      0.000     0.000     0.000         4
+         other_alza_neo_payment_due_dates      0.750     0.750     0.750         4
+               other_alzee_product_advice      1.000     0.500     0.667         4
+         other_branch_and_alzabox_reviews      0.000     0.000     0.000         4
+           other_bug_report_or_suggestion      0.000     0.000     0.000         4
+            other_compliment_or_complaint      0.000     0.000     0.000         4
+                        other_cooperation      1.000     0.250     0.400         4
+                   other_diplomatic_sales      1.000     1.000     1.000         4
+           other_eudr_product_information      1.000     1.000     1.000         4
+         other_product_price_verification      0.000     0.000     0.000         4
+             other_report_illegal_content      0.000     0.000     0.000         4
+                other_ring_size_selection      0.750     0.750     0.750         4
+              other_trade_in_bank_account      0.667     0.500     0.571         4
+                             return_goods      0.000     0.000     0.000         4
+                    services_alza_benefit      1.000     0.500     0.667         4
+                        services_alzaplus      1.000     0.750     0.857         4
+ services_built_in_appliance_installation      0.750     0.750     0.750         4
+      services_damage_and_theft_insurance      0.000     0.000     0.000         4
+                   services_device_rental      1.000     0.250     0.400         4
+               services_extended_warranty      0.600     0.750     0.667         4
+                   services_gift_wrapping      0.286     0.500     0.364         4
+           services_immediate_replacement      0.286     0.500     0.364         4
+                   services_initial_setup      1.000     0.250     0.400         4
+            services_insurance_withdrawal      0.222     0.500     0.308         4
+                    services_pay_in_three      0.000     0.000     0.000         4
+        services_return_within_sixty_days      1.000     0.250     0.400         4
+                services_send_via_alzabox      1.000     0.500     0.667         4
+              services_shipment_insurance      0.167     0.250     0.200         4
+             services_solar_power_systems      1.000     0.750     0.857         4
+                        services_trade_in      0.500     0.750     0.600         4
+                services_tv_wall_mounting      0.500     1.000     0.667         4
+services_warranty_or_replacement_callback      0.000     0.000     0.000         4
+
+                                 accuracy                          0.442       231
+                                macro avg      0.471     0.434     0.414       231
+                             weighted avg      0.478     0.442     0.422       231

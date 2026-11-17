@@ -31,6 +31,14 @@ dist/
 !.env.example
 !.env.template
 /alza_scraper/config.py
+/feat/alza_scraper/config.py
+/main/datasets/config.py
+/main/embedding_models/outputs/
+/main/embedding_models/.model_cache/
+/feat/embedding_models/outputs/
+/feat/embedding_models/outputs_by_generator/
+/feat/embedding_models/.model_cache/
+/feat/intent_classification/results_by_generator/
 .aws/
 
 # # Generované datasety a průběžné výstupy
