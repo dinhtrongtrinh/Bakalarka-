@@ -1,0 +1,17 @@
+{
+  "train": {
+    "path": "/home/martin/Bakalarka-/main/split_datasets/random/train.jsonl",
+    "sha256": "eea2f1e493730764a5b13a1a850f78e412e6bf16081eee34dbbbc6337ba4d3b7",
+    "number_of_records": 1211
+  },
+  "validation": {
+    "path": "/home/martin/Bakalarka-/main/split_datasets/random/validation.jsonl",
+    "sha256": "69be0d0066d4eddca8d3fbcfec64a5c11d5544ad2cd2b20eb481c1ec0fae1563",
+    "number_of_records": 231
+  },
+  "test": {
+    "path": "/home/martin/Bakalarka-/main/split_datasets/random/test.jsonl",
+    "sha256": "4a6b4233291711d69946eada153f9392d846575bfd5589184b12d3432a36b822",
+    "number_of_records": 288
+  }
+}

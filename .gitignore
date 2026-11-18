@@ -35,6 +35,8 @@ dist/
 /main/datasets/config.py
 /main/embedding_models/outputs/
 /main/embedding_models/.model_cache/
+/main/trained_models/outputs/
+/main/trained_models/.cache/
 /feat/embedding_models/outputs/
 /feat/embedding_models/outputs_by_generator/
 /feat/embedding_models/.model_cache/
