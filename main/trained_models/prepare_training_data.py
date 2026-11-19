@@ -1,96 +1,132 @@
 import json
-import random
-import hashlib
+from collections import defaultdict
 from pathlib import Path
+import random
 
+curr_dir = Path(__file__).resolve().parent
 
-# 1. Použijeme už hotový random split. Žádné nové rozdělování dat.
-current_dir = Path(__file__).resolve().parent
-datasets_dir = current_dir.parent / "split_datasets" / "random"
-output_dir = current_dir / "data" / "random"
+# Připravíme společnou výstupní složku pro train i validation.
+# open(..., "w") vytvoří soubor, ale chybějící složku samo nevytvoří.
+output_dir = curr_dir / "datasets_triplets"
 output_dir.mkdir(parents=True, exist_ok=True)
 
-# Zkontrolujeme, že mezi splity nejsou stejné texty. Čtení testu zde slouží
-# pouze ke kontrole rozdělení; test se nepoužije pro sestavení trénovacích trojic.
-texts_by_split = {}
-source_summary = {}
-for split in ["train", "validation", "test"]:
-    input_path = datasets_dir / f"{split}.jsonl"
-    texts_by_split[split] = set()
-    number_of_records = 0
-    with input_path.open(encoding="utf-8") as file:
-        for line in file:
-            if line.strip():
-                record = json.loads(line)
-                texts_by_split[split].add(record["text"].strip().casefold())
-                number_of_records += 1
-    source_summary[split] = {
-        "path": str(input_path),
-        "sha256": hashlib.sha256(input_path.read_bytes()).hexdigest(),
-        "number_of_records": number_of_records,
-    }
+#priprava train datasetu 
+train_datasets_dir = curr_dir.parent / "split_datasets" / "random" / "train.jsonl"
 
-for first_split, second_split in [("train", "validation"), ("train", "test"), ("validation", "test")]:
-    overlap = texts_by_split[first_split].intersection(texts_by_split[second_split])
-    if overlap:
-        raise ValueError(f"Stejné texty ve splitech {first_split} a {second_split}: {len(overlap)}")
+#nacteni datasetu
+with open(train_datasets_dir, "r", encoding="utf-8") as file:
+    train_datasets = [json.loads(line) for line in file if line.strip()]
 
-with (output_dir / "source_summary.json").open("w", encoding="utf-8") as file:
-    json.dump(source_summary, file, ensure_ascii=False, indent=2)
+records_by_intent = defaultdict(list)
+for record in train_datasets:
+    records_by_intent[record["intent_id"]].append(record)
 
-# Train a validation zpracujeme odděleně. Test vůbec nečteme.
-for split in ["train", "validation"]:
-    # Vlastní generátor zajistí stejný výběr trojic při opakovaném spuštění.
-    rng = random.Random(42)
-    records = []
-    with (datasets_dir / f"{split}.jsonl").open(encoding="utf-8") as file:
-        for line in file:
-            if line.strip():
-                records.append(json.loads(line))
+#kruhove parovani s Triple Loss
+triplets = []
+for intent_name, records in records_by_intent.items():
 
-    # 2. Slovník: intent_id -> seznam jeho vět.
-    sentences_by_intent = {}
-    for record in records:
-        intent = record["intent_id"]
-        if intent not in sentences_by_intent:
-            sentences_by_intent[intent] = []
-        sentences_by_intent[intent].append(record["text"])
+    if intent_name == "oos":
+        continue
 
-    # 3. Pro každou in-scope větu sestavíme jednu trojici.
-    triplets = []
-    for record in records:
-        intent = record["intent_id"]
+    negative_candidates = []
+    for dataset in train_datasets:
+        if dataset["intent_id"] != intent_name:
+            negative_candidates.append(dataset["text"])
+
+    if len(records) < 2:
+        continue
+    random.seed(42)
+    for index, record in enumerate(records):
+        negative = random.choice(negative_candidates)
         anchor = record["text"]
 
-        # OOS není jeden význam. Jeho věty tedy nespojujeme jako pozitivní pár.
-        # OOS ale zůstává dostupné mezi negativními příklady níže.
-        if intent == "oos":
-            continue
+        next_index = index + 1
 
-        # Positive musí mít stejný intent, ale jiný text než anchor.
-        positives = []
-        for text in sentences_by_intent[intent]:
-            if text != anchor:
-                positives.append(text)
-        negatives = []
-        for item in records:
-            if item["intent_id"] != intent:
-                negatives.append(item["text"])
-        if not positives or not negatives:
-            raise ValueError(f"Nelze sestavit trojici pro {split}: {intent}")
+        # Za posledním záznamem už další není, proto se vrátíme na první.
+        if next_index == len(records):
+            next_index = 0
 
-        triplets.append({
+        positive = records[next_index]["text"]
+
+        pair_sentence = {
             "anchor": anchor,
-            "positive": rng.choice(positives),
-            "negative": rng.choice(negatives),
-        })
+            "positive": positive,
+            "negative": negative
+        }
 
-    # 4. Trainer dostane jen tři textové sloupce v tomto pořadí.
-    # Prompty přidá až trénovací skript, aby se neuložily do původních textů.
-    rng.shuffle(triplets)
-    output_path = output_dir / f"{split}_triplets.jsonl"
-    with output_path.open("w", encoding="utf-8") as file:
-        for triplet in triplets:
-            file.write(json.dumps(triplet, ensure_ascii=False) + "\n")
+        triplets.append(pair_sentence)
 
-    print(f"{split}: {len(records)} vět -> {len(triplets)} trojic, uloženo do {output_path}")
+# Cesta k výstupnímu souboru.
+output_path_train = output_dir / "train_triplets.jsonl"
+
+# Každou trojici uložíme jako jeden JSON objekt na samostatný řádek.
+with open(output_path_train, "w", encoding="utf-8") as file:
+    for triplet in triplets:
+        json_text = json.dumps(triplet, ensure_ascii=False)
+        file.write(json_text + "\n")
+
+print("Počet uložených trojic:", len(triplets))
+print("Soubor:", output_path_train)
+
+
+
+
+
+
+#priprava val datasetu 
+val_datasets_dir = curr_dir.parent / "split_datasets" / "random" / "validation.jsonl"
+
+#nacteni datasetu
+with open(val_datasets_dir, "r", encoding="utf-8") as file:
+    val_datasets = [json.loads(line) for line in file if line.strip()]
+
+records_by_intent = defaultdict(list)
+for record in val_datasets:
+    records_by_intent[record["intent_id"]].append(record)
+
+#kruhove parovani s Triple Loss
+triplets = []
+for intent_name, records in records_by_intent.items():
+
+    if intent_name == "oos":
+        continue
+
+    negative_candidates = []
+    for dataset in val_datasets:
+        if dataset["intent_id"] != intent_name:
+            negative_candidates.append(dataset["text"])
+
+    if len(records) < 2:
+        continue
+    random.seed(42)
+    for index, record in enumerate(records):
+        negative = random.choice(negative_candidates)
+        anchor = record["text"]
+
+        next_index = index + 1
+
+        # Za posledním záznamem už další není, proto se vrátíme na první.
+        if next_index == len(records):
+            next_index = 0
+
+        positive = records[next_index]["text"]
+
+        pair_sentence = {
+            "anchor": anchor,
+            "positive": positive,
+            "negative": negative
+        }
+
+        triplets.append(pair_sentence)
+
+# Cesta k výstupnímu souboru.
+output_path_val = output_dir / "val_triplets.jsonl"
+
+# Každou trojici uložíme jako jeden JSON objekt na samostatný řádek.
+with open(output_path_val, "w", encoding="utf-8") as file:
+    for triplet in triplets:
+        json_text = json.dumps(triplet, ensure_ascii=False)
+        file.write(json_text + "\n")
+
+print("Počet uložených trojic:", len(triplets))
+print("Soubor:", output_path_val)
